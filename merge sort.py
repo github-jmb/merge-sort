@@ -2,6 +2,7 @@ import random
 import os
 import datetime
 from faker import Faker
+import matplotlib.pyplot as plt 
 
 def get_list_length():
     while True:
@@ -46,9 +47,6 @@ def merge3(A, first, middle, last):
         L.append(float('inf'))  # Sentinel for integer lists
         R.append(float('inf'))  # Sentinel for integer lists
     
-    print('L is: ' + str(L_readable))
-    print('R is: ' + str(R_readable))
-
     i = j = 0
     for k in range(first, last + 1):
         if isinstance(L[0], tuple):  
@@ -94,6 +92,27 @@ formatted_original_list = [
 formatted_sorted_list = [
     (name, date.strftime("%m-%d-%Y")) if isinstance(date, datetime.datetime) else date for name, date in sorted_list
 ] if mode == 'names' else sorted_list
+
+if mode == 'names':
+    original_ages = [(datetime.datetime.now() - date).days // 365 for name, date in original_list]
+    sorted_ages = [(datetime.datetime.now() - date).days // 365 for name, date in sorted_list]
+
+    plt.figure(figsize=(10, 6))
+
+    plt.subplot(1, 2, 1)
+    plt.bar(range(len(original_ages)), original_ages, color='red')
+    plt.title('Ages Before Sorting')
+    plt.xlabel('Index')
+    plt.ylabel('Age')
+
+    plt.subplot(1, 2, 2)
+    plt.bar(range(len(sorted_ages)), sorted_ages, color='green')
+    plt.title('Ages After Sorting')
+    plt.xlabel('Index')
+    plt.ylabel('Age')
+
+    plt.tight_layout()
+    plt.show()
 
 json_data = (
     '{\n'
